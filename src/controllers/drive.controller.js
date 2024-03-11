@@ -4,13 +4,16 @@ const { driveService } = require('../services');
 
 const addFolder = catchAsync(async (req, res) => {
   const folder = await driveService.createFolder(req.user._id, req.body);
-  res.status(httpStatus.CREATED).send({ folder, success: true });
+  res.status(httpStatus.CREATED).send({ message: 'Folder created successfully!', success: true, data: folder });
 });
 
 const addFile = catchAsync(async (req, res) => {
-  const folder = await driveService.addFile('65ec205f5b1b6a1fd87bb138', req.file, req.body);
-  //   const folder = await driveService.addFile(req.user._id, req.file, req.body);
-  res.status(httpStatus.CREATED).send({ folder });
+  // const folder = await driveService.addFile('65ec205f5b1b6a1fd87bb138', req.file, req.body);
+  console.log(req.user._id, 'req.user._id');
+  console.log(req.file, 'req.file');
+  console.log(req.body, ' req.body');
+  const folder = await driveService.addFile(req.user._id, req.file, req.body);
+  res.status(httpStatus.CREATED).send({ success: true, message: 'File added successfully!', data: folder });
 });
 
 const getUserDrive = catchAsync(async (req, res) => {

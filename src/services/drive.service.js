@@ -13,7 +13,7 @@ const createDrive = async (user) => {
 };
 
 const createFolder = async (userId, requestBody) => {
-  const drive = await Drive.findOne({ user: req.user._id });
+  const drive = await Drive.findOne({ user: userId });
   if (drive) {
     const newFolder = new Folder({
       title: requestBody.title,
@@ -123,7 +123,11 @@ const renameFolder = async (folderId, requestedBody) => {
   if (!folder) {
     throw new Error('Folder info update failed');
   }
-  return folder;
+  return {
+    success: true,
+    message: 'Folder Update successfully',
+    data: folder,
+  };
 };
 
 const deleteFolder = async (folderId) => {
@@ -146,7 +150,7 @@ const deleteFolder = async (folderId) => {
   for (const file of folderFilePaths) {
     await fs.promises.unlink(file);
   }
-  return folder;
+  return { success: true, message: 'Folder deleted successfully', data: folder };
 };
 
 const deleteFile = async (requestBody) => {
@@ -164,7 +168,7 @@ const deleteFile = async (requestBody) => {
     folder.files = newFiles;
     await folder.save();
   }
-  return deletedFile;
+  return { success: true, message: 'File deleted successfully', data: deletedFile };
 };
 
 module.exports = {
