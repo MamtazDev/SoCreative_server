@@ -1,11 +1,12 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, userService, tokenService, emailService } = require('../services');
+const { authService, userService, tokenService, emailService, driveService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.status(httpStatus.CREATED).send({ user, tokens });
+  const drive = await driveService.createDrive(user);
+  res.status(httpStatus.CREATED).send({ user, tokens, drive });
 });
 
 const login = catchAsync(async (req, res) => {
@@ -48,8 +49,8 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 const init = (req, res) => {
-  res.send("Api is working fine!");
-}
+  res.send('Api is working fine!');
+};
 
 module.exports = {
   register,
@@ -60,5 +61,5 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
-  init
+  init,
 };

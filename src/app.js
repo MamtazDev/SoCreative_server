@@ -7,6 +7,7 @@ const cors = require('cors');
 const passport = require('passport');
 const httpStatus = require('http-status');
 const config = require('./config/config');
+const path = require('path');
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
@@ -53,12 +54,13 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
+// server file routes
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Testing End point
-app.use('/', (req,res) => {
-  res.json({"Message": "You api working fine"})
+app.use('/', (req, res) => {
+  res.json({ Message: 'You api working fine' });
 });
-
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

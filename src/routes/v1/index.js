@@ -1,8 +1,8 @@
 const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
-const settingRoute = require('./setting.route');
 const docsRoute = require('./docs.route');
+const driveRoute = require('./drive.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -17,8 +17,8 @@ const defaultRoutes = [
     route: userRoute,
   },
   {
-    path: '/setting',
-    route: settingRoute,
+    path: '/drive',
+    route: driveRoute,
   },
 ];
 
