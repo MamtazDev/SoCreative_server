@@ -32,6 +32,27 @@ const upload = multer({
   },
 });
 
+const projectStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (!fs.existsSync('public')) {
+      fs.mkdirSync('public');
+    }
+
+    if (!fs.existsSync('public/videos')) {
+      fs.mkdirSync('public/videos');
+    }
+
+    cb(null, 'public/videos');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
+const projectUpload = multer({
+  storage: projectStorage,
+});
+
 module.exports = {
   upload,
+  projectUpload,
 };
