@@ -4,6 +4,8 @@ const supportMetarialSchema = new mongoose.Schema(
   {
     file: String,
     fileType: String,
+    size: Number,
+    name: String,
   },
   { _id: false }
 );
@@ -54,7 +56,13 @@ const projectSchema = new mongoose.Schema(
     //   type: mongoose.SchemaTypes.ObjectId,
     //   ref: 'BrandKit',
     //   required: false,
+    //   default: null,
     // },
+    brandKit: {
+      type: String,
+      required: false,
+      default: '',
+    },
     aspectRatio: {
       type: String,
       required: false,
@@ -73,12 +81,13 @@ const projectSchema = new mongoose.Schema(
     totalCredit: {
       type: Number,
       required: false,
+      default: 0,
     },
     status: {
       type: String,
       required: false,
       default: 'Draft',
-      enum: ['Draft', 'Exported'],
+      enum: ['Draft', 'Exported', 'In Progress'],
     },
   },
   {

@@ -10,7 +10,7 @@ const createProject = async (userId, files, requestedBody) => {
   }
   if (files?.supportive) {
     const supportiveFiles = files?.supportive?.map((i) => {
-      return { file: i.path, fileType: i.mimetype };
+      return { file: i.path, fileType: i.mimetype, size: Number(i.size), name: i.originalname };
     });
     rest['supportiveMaterials'] = supportiveFiles;
   }
@@ -31,8 +31,8 @@ const getProjectInfo = async (projectId) => {
   return project;
 };
 
-const getUserAllProjects = async (userId, status) => {
-  const projects = await Project.find({ creator: userId, status: status });
+const getUserAllProjects = async (userId, query) => {
+  const projects = await Project.find({ creator: userId, ...query });
   return projects;
 };
 

@@ -15,7 +15,7 @@ const getProjectDetails = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(project);
 });
 const getUserProjects = catchAsync(async (req, res) => {
-  const project = await projectService.getUserAllProjects(req.user._id, req.body.status);
+  const project = await projectService.getUserAllProjects(req.user._id, req.query);
   if (!project) {
     throw new Error('Project not found');
   }
