@@ -5,6 +5,7 @@ const docsRoute = require('./docs.route');
 const driveRoute = require('./drive.route');
 const testAuthRoute = require('./testAuth.route');
 const projectRoute = require('./project.route');
+const brandKitRoute = require('./brandKit.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -26,6 +27,10 @@ const defaultRoutes = [
   {
     path: '/project',
     route: projectRoute,
+  },
+  {
+    path: '/brand-Kit',
+    route: brandKitRoute,
   },
 ];
 
