@@ -6,6 +6,7 @@ const driveRoute = require('./drive.route');
 const testAuthRoute = require('./testAuth.route');
 const projectRoute = require('./project.route');
 const brandKitRoute = require('./brandKit.route');
+const vimeoRoute = require('./vimeo.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -31,6 +32,10 @@ const defaultRoutes = [
   {
     path: '/brand-Kit',
     route: brandKitRoute,
+  },
+  {
+    path: '/vimeo',
+    route: vimeoRoute,
   },
 ];
 
