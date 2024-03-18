@@ -18,6 +18,4 @@ router.post(
 router.get('/userProjects', isAuth, projectController.getUserProjects);
 router.get('/:id', isAuth, projectController.getProjectDetails);
 
-router.get('/init', projectController.init);
-
 module.exports = router;

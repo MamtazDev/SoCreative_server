@@ -16,7 +16,7 @@ const getAllBrandKits = catchAsync(async (req, res) => {
 
 const getBrandKitInfo = catchAsync(async (req, res) => {
   const result = await brandKitService.getBrandKitInfo(req.params.id);
-  
+
   if (!result) {
     throw new Error('Brand Kit not found');
   }
