@@ -11,6 +11,17 @@ const supportMetarialSchema = new mongoose.Schema(
 );
 const addOnsSchema = new mongoose.Schema({ name: String, description: String, credit: Number }, { _id: false });
 
+const fileSchema = new mongoose.Schema(
+  {
+    fileData: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'File',
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
 const projectSchema = new mongoose.Schema(
   {
     creator: {
@@ -19,14 +30,15 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    // files: {
-    //   type: [fileSchema],
-    //   required: false,
-    // },
-    file: {
-      type: String,
-      required: true,
+    files: {
+      type: [fileSchema],
+      required: false,
+      default: [],
     },
+    // file: {
+    //   type: String,
+    //   required: true,
+    // },
     projectTitle: {
       type: String,
       required: false,
@@ -83,11 +95,21 @@ const projectSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+
+    editor: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+      required: false,
+    },
+    exportedUrl: {
+      type: String,
+      required: false,
+    },
     status: {
       type: String,
       required: false,
       default: 'Draft',
-      enum: ['Draft', 'Exported', 'In Progress'],
+      enum: ['Draft', 'Pending', 'In Progress', 'Exported'],
     },
   },
   {

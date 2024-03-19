@@ -3,8 +3,13 @@ const catchAsync = require('../utils/catchAsync');
 const { projectService } = require('../services');
 
 const addProject = catchAsync(async (req, res) => {
-  const project = await projectService.createProject(req.user._id, req.files, req.body);
-  res.status(httpStatus.CREATED).send({ message: 'Folder created successfully!', success: true, data: project });
+  const project = await projectService.createProject(req.user._id, req.file, req.body);
+  res.status(httpStatus.CREATED).send({ message: 'Project created successfully!', success: true, data: project });
+});
+
+const updateProject = catchAsync(async (req, res) => {
+  const project = await projectService.updateProjectInfo(req.user._id, req.files, req.body);
+  res.status(httpStatus.CREATED).send({ message: 'Project updated successfully!', success: true, data: project });
 });
 
 const getProjectDetails = catchAsync(async (req, res) => {
@@ -28,6 +33,7 @@ const init = (req, res) => {
 
 module.exports = {
   addProject,
+  updateProject,
   getProjectDetails,
   getUserProjects,
   init,
