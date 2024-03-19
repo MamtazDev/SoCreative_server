@@ -61,4 +61,5 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
   },
+  vimeoAccessToken: envVars.VIMEO_ACCESS_TOKEN
 };

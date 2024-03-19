@@ -27,14 +27,11 @@ const getUserProjects = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(project);
 });
 
-const init = (req, res) => {
-  res.send('Api is working fine!');
-};
+
 
 module.exports = {
   addProject,
   updateProject,
   getProjectDetails,
   getUserProjects,
-  init,
 };
