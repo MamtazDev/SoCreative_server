@@ -1,24 +1,43 @@
+const File = require('../models/file.model');
 const Project = require('../models/project.model');
 
-const createProject = async (userId, files, requestedBody) => {
-  const { projectId, ...rest } = requestedBody;
+const createProject = async (userId, file, requestedBody) => {
+  const { title, projectId } = requestedBody;
+  const { path, size } = file;
 
   let project = await Project.findById(projectId);
 
-  if (files?.file) {
-    rest['file'] = files?.file[0]?.path;
-  }
-  if (files?.supportive) {
-    const supportiveFiles = files?.supportive?.map((i) => {
-      return { file: i.path, fileType: i.mimetype };
-    });
-    rest['supportiveMaterials'] = supportiveFiles;
+  if (!project) {
+    project = new Project({ creator: userId });
   }
 
-  if (!project) {
-    project = new Project({ creator: userId, file: rest.file });
-    await project.save();
-    return project;
+  const newFile = new File({
+    parentFolderId: project?._id,
+    title: title,
+    user: userId,
+    file: path,
+    fileSize: size,
+  });
+
+  const files = await newFile.save();
+
+  project.files.push({
+    fileData: files._id,
+  });
+
+  const updatedProject = await project.save();
+
+  return updatedProject;
+};
+
+const updateProjectInfo = async (files, requestedBody) => {
+  const { projectId, ...rest } = requestedBody;
+
+  if (files?.supportive) {
+    const supportiveFiles = files?.supportive?.map((i) => {
+      return { file: i.path, fileType: i.mimetype, size: Number(i.size), name: i.originalname };
+    });
+    rest['supportiveMaterials'] = supportiveFiles;
   }
 
   const updateProject = await Project.findByIdAndUpdate(projectId, rest, { new: true });
@@ -31,8 +50,8 @@ const getProjectInfo = async (projectId) => {
   return project;
 };
 
-const getUserAllProjects = async (userId, status) => {
-  const projects = await Project.find({ creator: userId, status: status });
+const getUserAllProjects = async (userId, query) => {
+  const projects = await Project.find({ creator: userId, ...query });
   return projects;
 };
 
@@ -199,4 +218,5 @@ module.exports = {
   createProject,
   getProjectInfo,
   getUserAllProjects,
+  updateProjectInfo,
 };
