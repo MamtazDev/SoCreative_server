@@ -1,4 +1,6 @@
 const express = require('express');
+const config = require('../../config/config');
+
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
@@ -7,7 +9,7 @@ const testAuthRoute = require('./testAuth.route');
 const projectRoute = require('./project.route');
 const brandKitRoute = require('./brandKit.route');
 const vimeoRoute = require('./vimeo.route');
-const config = require('../../config/config');
+const notificationRoute = require('./notification.route');
 
 const router = express.Router();
 
@@ -37,6 +39,10 @@ const defaultRoutes = [
     path: '/vimeo',
     route: vimeoRoute,
   },
+  {
+    path: '/notification',
+    route: notificationRoute,
+  }
 ];
 
 const devRoutes = [ 
