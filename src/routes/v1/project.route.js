@@ -7,6 +7,7 @@ const { projectController } = require('../../controllers');
 const router = express.Router();
 
 router.post('/add', isAuth, upload.single('video'), projectController.addProject);
+router.post('/addComment', isAuth, projectController.addCommentOnProject);
 router.patch(
   '/update',
   isAuth,
@@ -14,6 +15,8 @@ router.patch(
   projectController.updateProject
 );
 router.get('/userProjects', isAuth, projectController.getUserProjects);
+router.get('/getAllProjects', isAuth, projectController.getAllProjects);
 router.get('/:id', isAuth, projectController.getProjectDetails);
+router.get('/comment/:projectId', isAuth, projectController.getProjectComments);
 
 module.exports = router;

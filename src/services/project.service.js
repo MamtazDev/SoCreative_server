@@ -1,5 +1,6 @@
 const File = require('../models/file.model');
 const Project = require('../models/project.model');
+const ProjectComment = require('../models/projectComment.model');
 
 const createProject = async (userId, file, requestedBody) => {
   const { title, projectId } = requestedBody;
@@ -46,12 +47,70 @@ const updateProjectInfo = async (files, requestedBody) => {
 };
 
 const getProjectInfo = async (projectId) => {
-  const project = await Project.findById(projectId);
+  const project = await Project.findById(projectId).populate([
+    {
+      path: 'files',
+      populate: {
+        path: 'fileData',
+      },
+    },
+  ]);
   return project;
 };
 
 const getUserAllProjects = async (userId, query) => {
-  const projects = await Project.find({ creator: userId, ...query });
+  const projects = await Project.find({ creator: userId, ...query })
+    .populate([
+      {
+        path: 'files',
+        populate: {
+          path: 'fileData',
+        },
+      },
+    ])
+    .sort({ createdAt: -1 });
+  return projects;
+};
+
+const addComments = async (userId, requestedBody) => {
+  const { projectId, comment } = requestedBody;
+
+  const newComment = {
+    user: userId,
+    comment: comment,
+  };
+
+  let projectComments = await ProjectComment.findOne({ project: projectId });
+
+  if (!projectComments) {
+    projectComments = new ProjectComment({ project: projectId });
+  }
+
+  projectComments.comments.push(newComment);
+
+  await projectComments.save();
+
+  return projectComments;
+};
+
+const getProjectComments = async (projectId) => {
+  const comments = await ProjectComment.findOne({ project: projectId }).populate([
+    {
+      path: 'comments',
+      populate: {
+        path: 'user',
+      },
+    },
+  ]);
+
+  return comments;
+};
+
+const getAllProjectsInfo = async (query) => {
+  const projects = await Project.find({ ...query })
+    .populate({ path: 'creator', select: '-password' })
+    .populate({ path: 'editor', select: '-password' })
+    .sort({ createdAt: -1 });
   return projects;
 };
 
@@ -219,4 +278,7 @@ module.exports = {
   getProjectInfo,
   getUserAllProjects,
   updateProjectInfo,
+  getProjectComments,
+  addComments,
+  getAllProjectsInfo,
 };

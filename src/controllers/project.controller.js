@@ -8,7 +8,7 @@ const addProject = catchAsync(async (req, res) => {
 });
 
 const updateProject = catchAsync(async (req, res) => {
-  const project = await projectService.updateProjectInfo(req.user._id, req.files, req.body);
+  const project = await projectService.updateProjectInfo(req.files, req.body);
   res.status(httpStatus.CREATED).send({ message: 'Project updated successfully!', success: true, data: project });
 });
 
@@ -27,11 +27,33 @@ const getUserProjects = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(project);
 });
 
+const addCommentOnProject = catchAsync(async (req, res) => {
+  const comments = await projectService.addComments(req.user._id, req.body);
+  res.status(httpStatus.CREATED).send({ message: 'Comments added successfully!', success: true, data: comments });
+});
 
+const getProjectComments = catchAsync(async (req, res) => {
+  const comments = await projectService.getProjectComments(req.params.projectId);
+  if (!comments) {
+    throw new Error('Comments not found');
+  }
+  res.status(httpStatus.CREATED).send(comments);
+});
+
+const getAllProjects = catchAsync(async (req, res) => {
+  const project = await projectService.getAllProjectsInfo(req.query);
+  if (!project) {
+    throw new Error('Project not found');
+  }
+  res.status(httpStatus.CREATED).send(project);
+});
 
 module.exports = {
   addProject,
   updateProject,
   getProjectDetails,
   getUserProjects,
+  addCommentOnProject,
+  getProjectComments,
+  getAllProjects,
 };

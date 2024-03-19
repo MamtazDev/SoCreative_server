@@ -26,7 +26,7 @@ const projectSchema = new mongoose.Schema(
   {
     creator: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
+      ref: 'TestUser',
       required: true,
     },
 
@@ -98,7 +98,7 @@ const projectSchema = new mongoose.Schema(
 
     editor: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
+      ref: 'TestUser',
       required: false,
     },
     exportedUrl: {
