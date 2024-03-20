@@ -107,9 +107,20 @@ const getProjectComments = async (projectId) => {
 };
 
 const getAllProjectsInfo = async (query) => {
-  const projects = await Project.find({ ...query })
+  if (query.editor === 'none') {
+    query.editor = { $exists: false };
+  }
+  const projects = await Project.find(query)
     .populate({ path: 'creator', select: '-password' })
     .populate({ path: 'editor', select: '-password' })
+    .populate([
+      {
+        path: 'files',
+        populate: {
+          path: 'fileData',
+        },
+      },
+    ])
     .sort({ createdAt: -1 });
   return projects;
 };
