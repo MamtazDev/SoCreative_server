@@ -6,7 +6,7 @@ const { projectController } = require('../../controllers');
 
 const router = express.Router();
 
-router.post('/add', isAuth, upload.single('video'), projectController.addProject);
+router.post('/add', isAuth, projectController.addProject);
 router.post('/addComment', isAuth, projectController.addCommentOnProject);
 router.patch(
   '/update',
