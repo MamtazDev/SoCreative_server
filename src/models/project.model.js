@@ -95,6 +95,11 @@ const projectSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    creditHistory:{
+      type: Array,
+      required: false,
+      default: 0,
+    },
 
     editor: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -109,7 +114,7 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
       default: 'Draft',
-      enum: ['Draft', 'Pending', 'In Progress', 'Exported'],
+      enum: ['Draft', 'Pending', 'accepted' , 'In Progress', 'Exported'],
     },
   },
   {

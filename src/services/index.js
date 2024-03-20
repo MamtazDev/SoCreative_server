@@ -5,3 +5,4 @@ module.exports.userService = require('./user.service');
 module.exports.driveService = require('./drive.service');
 module.exports.projectService = require('./project.service');
 module.exports.brandKitService = require('./brandKit.service');
+module.exports.notificationService = require('./notification.service');
