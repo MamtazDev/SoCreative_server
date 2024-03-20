@@ -2,9 +2,10 @@ const File = require('../models/file.model');
 const Project = require('../models/project.model');
 const ProjectComment = require('../models/projectComment.model');
 
-const createProject = async (userId, file, requestedBody) => {
-  const { title, projectId } = requestedBody;
-  const { path, size } = file;
+const createProject = async (userId, requestedBody) => {
+  const { title, projectId, size, path } = requestedBody;
+
+  console.log(requestedBody, 'jfkfjd');
 
   let project = await Project.findById(projectId);
 
@@ -94,14 +95,16 @@ const addComments = async (userId, requestedBody) => {
 };
 
 const getProjectComments = async (projectId) => {
-  const comments = await ProjectComment.findOne({ project: projectId }).populate([
-    {
-      path: 'comments',
-      populate: {
-        path: 'user',
+  const comments =
+    (await ProjectComment.findOne({ project: projectId }).populate([
+      {
+        path: 'comments',
+        populate: {
+          path: 'user',
+          select: '-password',
+        },
       },
-    },
-  ]);
+    ])) || {};
 
   return comments;
 };

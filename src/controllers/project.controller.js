@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { projectService } = require('../services');
 
 const addProject = catchAsync(async (req, res) => {
-  const project = await projectService.createProject(req.user._id, req.file, req.body);
+  const project = await projectService.createProject(req.user._id, req.body);
   res.status(httpStatus.CREATED).send({ message: 'Project created successfully!', success: true, data: project });
 });
 
@@ -34,9 +34,9 @@ const addCommentOnProject = catchAsync(async (req, res) => {
 
 const getProjectComments = catchAsync(async (req, res) => {
   const comments = await projectService.getProjectComments(req.params.projectId);
-  if (!comments) {
-    throw new Error('Comments not found');
-  }
+  // if (!comments) {
+  //   throw new Error('Comments not found');
+  // }
   res.status(httpStatus.CREATED).send(comments);
 });
 
