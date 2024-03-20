@@ -75,7 +75,34 @@ const loginUser = async (req, res) => {
   }
 };
 
+const allUser = async (req, res) => {
+  try {
+    const user = await User.find({});
+    if (!user) {
+      return res.status(401).send({
+        success: false,
+        type: 'email',
+        message: 'User not found',
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: 'All user fetched successfully',
+      user: user,
+    });
+
+    
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  allUser
 };

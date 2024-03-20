@@ -13,6 +13,10 @@ const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
+// redis middleware
+const {initializeRedisClient} = require('./middlewares/redis')
+
+
 const ApiError = require('./utils/ApiError');
 
 const app = express();
@@ -50,6 +54,11 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
+
+
+// connect to Redis
+initializeRedisClient();
+
 
 // v1 api routes
 app.use('/v1', routes);
