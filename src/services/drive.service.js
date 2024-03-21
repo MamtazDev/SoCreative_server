@@ -112,7 +112,7 @@ const getFolderAllFiles = async (folderId) => {
 const getUserAllFilesData = async (userId) => {
   const files = await File.find({
     user: userId,
-  });
+  }).sort({ createdAt: -1 });
   return files;
 };
 
