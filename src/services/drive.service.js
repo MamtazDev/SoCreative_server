@@ -32,9 +32,8 @@ const createFolder = async (userId, requestBody) => {
   return drive;
 };
 
-const addFile = async (userId, file, requestBody) => {
-  const { title, parentFolderId } = requestBody;
-  const { path, size } = file;
+const addFile = async (userId, requestBody) => {
+  const { title, parentFolderId, path, size } = requestBody;
 
   const drive = parentFolderId ? await Folder.findById(parentFolderId) : await Drive.findOne({ user: userId });
 
@@ -146,10 +145,10 @@ const deleteFolder = async (folderId) => {
   const folderFilesIds = folder.file.map((f) => f.fileData._id);
   await File.deleteMany({ _id: { $in: folderFilesIds } });
 
-  const folderFilePaths = folder.file.map((f) => f.fileData.file);
-  for (const file of folderFilePaths) {
-    await fs.promises.unlink(file);
-  }
+  // const folderFilePaths = folder.file.map((f) => f.fileData.file);
+  // for (const file of folderFilePaths) {
+  //   await fs.promises.unlink(file);
+  // }
   return { success: true, message: 'Folder deleted successfully', data: folder };
 };
 
@@ -160,7 +159,7 @@ const deleteFile = async (requestBody) => {
     throw new Error('File delete failed');
   }
 
-  fs.unlink(deletedFile.file);
+  // fs.unlink(deletedFile.file);
 
   if (folderId) {
     const folder = await Folder.findById(folderId);

@@ -10,7 +10,7 @@ const addFolder = catchAsync(async (req, res) => {
 const addFile = catchAsync(async (req, res) => {
   // const folder = await driveService.addFile('65ec205f5b1b6a1fd87bb138', req.file, req.body);
 
-  const folder = await driveService.addFile(req.user._id, req.file, req.body);
+  const folder = await driveService.addFile(req.user._id, req.body);
   res.status(httpStatus.CREATED).send({ success: true, message: 'File added successfully!', data: folder });
 });
 
