@@ -142,13 +142,21 @@ const deleteFolder = async (folderId) => {
     throw new Error('Folder delete failed');
   }
 
-  const folderFilesIds = folder.file.map((f) => f.fileData._id);
+  // deleting folder from the drive
+  const drive = await Drive.findById(folder.parentFolderId);
+  const updatedFolders = drive.folders.filter((f) => f.folderData.toString() !== folderId);
+  drive.folders = updatedFolders;
+  await drive.save();
+
+  // deleting folder files
+  const folderFilesIds = folder.files.map((f) => f.fileData._id);
   await File.deleteMany({ _id: { $in: folderFilesIds } });
 
   // const folderFilePaths = folder.file.map((f) => f.fileData.file);
   // for (const file of folderFilePaths) {
   //   await fs.promises.unlink(file);
   // }
+
   return { success: true, message: 'Folder deleted successfully', data: folder };
 };
 
@@ -163,9 +171,18 @@ const deleteFile = async (requestBody) => {
 
   if (folderId) {
     const folder = await Folder.findById(folderId);
-    const newFiles = folder.files.filter((i) => i._id !== fileId);
-    folder.files = newFiles;
-    await folder.save();
+    if (folder) {
+      const newFiles = folder.files.filter((i) => i.fileData.toString() !== fileId);
+      folder.files = newFiles;
+      await folder.save();
+    }
+
+    const drive = await Drive.findById(folderId);
+    if (drive) {
+      const newDriveFiles = drive.files.filter((i) => i.fileData.toString() !== fileId);
+      drive.files = newDriveFiles;
+      await drive.save();
+    }
   }
   return { success: true, message: 'File deleted successfully', data: deletedFile };
 };

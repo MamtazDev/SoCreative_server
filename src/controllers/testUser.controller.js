@@ -77,16 +77,10 @@ const loginUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   try {
-    const { ...info } = req.body;
-
     const isExist = await User.findOne({ _id: req.user._id });
 
-    const image = req.file ? req.file.path : undefined;
-
-    const updateInfo = image ? { image, ...info } : info;
-
     if (isExist) {
-      const result = await User.findByIdAndUpdate({ _id: req.user._id }, updateInfo, {
+      const result = await User.findByIdAndUpdate(req.user._id, req.body, {
         new: true,
       });
       res.status(200).json({
