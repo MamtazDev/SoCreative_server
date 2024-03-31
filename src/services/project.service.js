@@ -42,6 +42,18 @@ const updateProjectInfo = async (files, requestedBody) => {
     rest['supportiveMaterials'] = supportiveFiles;
   }
 
+  if (rest?.submitVideo) {
+    const newFile = new File({
+      parentFolderId: projectId,
+      title: rest?.title,
+      user: userId,
+      file: rest?.$existspath,
+      fileSize: rest?.size,
+    });
+    const files = await newFile.save();
+    const updatedProject = await Project.findByIdAndUpdate();
+  }
+
   const updateProject = await Project.findByIdAndUpdate(projectId, rest, { new: true });
 
   return updateProject;

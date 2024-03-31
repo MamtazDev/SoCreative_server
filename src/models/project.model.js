@@ -95,7 +95,7 @@ const projectSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    creditHistory:{
+    creditHistory: {
       type: Array,
       required: false,
       default: 0,
@@ -107,14 +107,21 @@ const projectSchema = new mongoose.Schema(
       required: false,
     },
     exportedUrl: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'File',
       required: false,
+    },
+
+    previousVersion: {
+      type: [fileSchema],
+      required: false,
+      default: [],
     },
     status: {
       type: String,
       required: false,
       default: 'Draft',
-      enum: ['Draft', 'Pending', 'accepted' , 'In Progress', 'Exported'],
+      enum: ['Draft', 'Pending', 'accepted', 'In Progress', 'Exported'],
     },
   },
   {
