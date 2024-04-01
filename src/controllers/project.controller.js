@@ -8,7 +8,7 @@ const addProject = catchAsync(async (req, res) => {
 });
 
 const updateProject = catchAsync(async (req, res) => {
-  const project = await projectService.updateProjectInfo(req.files, req.body);
+  const project = await projectService.updateProjectInfo(req.files, req.user._id, req.body);
   res.status(httpStatus.CREATED).send({ message: 'Project updated successfully!', success: true, data: project });
 });
 
