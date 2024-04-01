@@ -5,7 +5,6 @@ const ProjectComment = require('../models/projectComment.model');
 const createProject = async (userId, requestedBody) => {
   const { title, projectId, size, path } = requestedBody;
 
-  console.log(requestedBody, 'jfkfjd');
 
   let project = await Project.findById(projectId);
 
@@ -32,7 +31,7 @@ const createProject = async (userId, requestedBody) => {
   return updatedProject;
 };
 
-const updateProjectInfo = async (files, requestedBody) => {
+const updateProjectInfo = async (files, userId, requestedBody) => {
   const { projectId, ...rest } = requestedBody;
 
   if (files?.supportive) {
@@ -47,11 +46,25 @@ const updateProjectInfo = async (files, requestedBody) => {
       parentFolderId: projectId,
       title: rest?.title,
       user: userId,
-      file: rest?.$existspath,
+      file: rest?.path,
       fileSize: rest?.size,
     });
+
     const files = await newFile.save();
-    const updatedProject = await Project.findByIdAndUpdate();
+
+    const project = await Project.findById(projectId)
+
+    if (project.exportedUrl) {
+      project.previousVersion.push({
+        fileData: project.exportedUrl,
+      })
+    }
+
+    project.exportedUrl = files._id
+
+    const updatedProject = await project.save();
+
+    return updatedProject
   }
 
   const updateProject = await Project.findByIdAndUpdate(projectId, rest, { new: true });
@@ -60,7 +73,7 @@ const updateProjectInfo = async (files, requestedBody) => {
 };
 
 const getProjectInfo = async (projectId) => {
-  const project = await Project.findById(projectId).populate([
+  const project = await Project.findById(projectId).populate({ path: 'exportedUrl' }).populate([
     {
       path: 'files',
       populate: {
@@ -128,9 +141,17 @@ const getAllProjectsInfo = async (query) => {
   const projects = await Project.find(query)
     .populate({ path: 'creator', select: '-password' })
     .populate({ path: 'editor', select: '-password' })
+    .populate({ path: 'exportedUrl' })
     .populate([
       {
         path: 'files',
+        populate: {
+          path: 'fileData',
+        },
+      },
+    ]).populate([
+      {
+        path: 'previousVersion',
         populate: {
           path: 'fileData',
         },
