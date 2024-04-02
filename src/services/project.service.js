@@ -5,7 +5,6 @@ const ProjectComment = require('../models/projectComment.model');
 const createProject = async (userId, requestedBody) => {
   const { title, projectId, size, path } = requestedBody;
 
-
   let project = await Project.findById(projectId);
 
   if (!project) {
@@ -52,19 +51,18 @@ const updateProjectInfo = async (files, userId, requestedBody) => {
 
     const files = await newFile.save();
 
-    const project = await Project.findById(projectId)
+    const project = await Project.findById(projectId);
 
-    if (project.exportedUrl) {
-      project.previousVersion.push({
-        fileData: project.exportedUrl,
-      })
-    }
-
-    project.exportedUrl = files._id
+    project.exportedUrl = files._id;
+    // if (project.exportedUrl) {
+    project.previousVersion.push({
+      fileData: files._id,
+    });
+    // }
 
     const updatedProject = await project.save();
 
-    return updatedProject
+    return updatedProject;
   }
 
   const updateProject = await Project.findByIdAndUpdate(projectId, rest, { new: true });
@@ -73,14 +71,16 @@ const updateProjectInfo = async (files, userId, requestedBody) => {
 };
 
 const getProjectInfo = async (projectId) => {
-  const project = await Project.findById(projectId).populate({ path: 'exportedUrl' }).populate([
-    {
-      path: 'files',
-      populate: {
-        path: 'fileData',
+  const project = await Project.findById(projectId)
+    .populate({ path: 'exportedUrl' })
+    .populate([
+      {
+        path: 'files',
+        populate: {
+          path: 'fileData',
+        },
       },
-    },
-  ]);
+    ]);
   return project;
 };
 
@@ -149,7 +149,8 @@ const getAllProjectsInfo = async (query) => {
           path: 'fileData',
         },
       },
-    ]).populate([
+    ])
+    .populate([
       {
         path: 'previousVersion',
         populate: {
