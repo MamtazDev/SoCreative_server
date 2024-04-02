@@ -54,11 +54,10 @@ const updateProjectInfo = async (files, userId, requestedBody) => {
     const project = await Project.findById(projectId);
 
     project.exportedUrl = files._id;
-    // if (project.exportedUrl) {
+
     project.previousVersion.push({
       fileData: files._id,
     });
-    // }
 
     const updatedProject = await project.save();
 
