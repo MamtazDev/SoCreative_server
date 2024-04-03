@@ -48,6 +48,11 @@ const getAllProjects = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(project);
 });
 
+const addProjectReview = catchAsync(async (req, res) => {
+  const review = await projectService.addProjectReview(req.user._id, req.body);
+  res.status(httpStatus.CREATED).send({ message: 'Review added successfully!', success: true, data: review });
+});
+
 module.exports = {
   addProject,
   updateProject,
@@ -56,4 +61,5 @@ module.exports = {
   addCommentOnProject,
   getProjectComments,
   getAllProjects,
+  addProjectReview,
 };

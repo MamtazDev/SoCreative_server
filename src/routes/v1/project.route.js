@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/add', isAuth, projectController.addProject);
 router.post('/addComment', isAuth, projectController.addCommentOnProject);
+router.post('/addReview', isAuth, projectController.addProjectReview);
 router.patch(
   '/update',
   isAuth,
