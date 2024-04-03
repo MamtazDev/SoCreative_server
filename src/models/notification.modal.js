@@ -13,10 +13,6 @@ const notificationSchema = new mongoose.Schema(
       required: true,
       enum: xNotificationType
     },
-    userName: {
-        type: String,
-        required:false,
-    },
     detailes: {
         type: String,
         required: true,

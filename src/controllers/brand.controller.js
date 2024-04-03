@@ -3,6 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const { brandKitService } = require('../services');
 
 const createBrandKit = catchAsync(async (req, res) => {
+  console.log("req.body:", req.body);
+  
   const result = await brandKitService.createBrandKit(req.body);
 
   res.status(httpStatus.OK).send({ message: 'Brand Kit created successfully!', success: true, data: result });

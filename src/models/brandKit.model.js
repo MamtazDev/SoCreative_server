@@ -6,7 +6,7 @@ const brandKitSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',
       required: true,
-    },
+    }, 
 
     brandLogo: {
       type: String,
@@ -25,7 +25,7 @@ const brandKitSchema = new mongoose.Schema(
     brandGuidelines: [{
       type: String,
       required: true,
-    }],
+    }], 
     logos: [{
       type: String,
       required: false,
