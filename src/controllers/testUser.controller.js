@@ -102,8 +102,36 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
+const updateCredit = async (req, res) => {
+  try {
+    const isExist = await User.findOne({ _id: req.user._id });
+
+    if (isExist) {
+      const result = await User.findByIdAndUpdate(req.user._id, { credit: req.body.credit }, {
+        new: true,
+      });
+      res.status(200).json({
+        success: true,
+        message: 'User Info Update successfully',
+        data: removeSensitiveInfo(result),
+      });
+    } else {
+      res.status(201).json({
+        success: false,
+        message: 'Update unsuccessful',
+      });
+    }
+  } catch (error) {
+    res.status(201).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   updateUserInfo,
+  updateCredit
 };

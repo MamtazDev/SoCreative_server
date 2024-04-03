@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    credit: {
+      type: Number,
+      required: false,
+      default:0
+    },
     role: {
       type: String,
       enum: ['USER', 'EDITOR', 'ADMIN'],
