@@ -10,6 +10,7 @@ const projectRoute = require('./project.route');
 const brandKitRoute = require('./brandKit.route');
 const vimeoRoute = require('./vimeo.route');
 const notificationRoute = require('./notification.route');
+const contactUsRoute = require('./contactUs.route');
 
 const router = express.Router();
 
@@ -42,10 +43,14 @@ const defaultRoutes = [
   {
     path: '/notification',
     route: notificationRoute,
-  }
+  },
+  {
+    path: '/contact-us',
+    route: contactUsRoute,
+  },
 ];
 
-const devRoutes = [ 
+const devRoutes = [
   // routes available only in development mode
   {
     path: '/docs',

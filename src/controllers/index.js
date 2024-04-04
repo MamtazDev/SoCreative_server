@@ -5,3 +5,4 @@ module.exports.projectController = require('./project.controller');
 module.exports.brandKitController = require('./brand.controller');
 module.exports.vimeoController = require('./vimeo.controller');
 module.exports.notificationController = require('./notification.controller');
+module.exports.contactUsController = require('./contactUs.controller');
