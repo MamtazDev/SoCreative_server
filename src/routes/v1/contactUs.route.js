@@ -5,7 +5,7 @@ const { contactUsController } = require('../../controllers');
 const router = express.Router();
 
 router.post('/add', isAuth, contactUsController.makeContact);
-router.post('/autoReply', contactUsController.generateAutoReply);
+router.post('/autoReply', isAuth, contactUsController.generateAutoReply);
 
 router.get('/me', isAuth, contactUsController.userContactMessage);
 router.get('/all', isAdmin, contactUsController.allContactMessage);

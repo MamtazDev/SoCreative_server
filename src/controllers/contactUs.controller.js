@@ -8,7 +8,7 @@ const makeContact = catchAsync(async (req, res) => {
 });
 
 const generateAutoReply = catchAsync(async (req, res) => {
-  const contact = await contactUsService.autoReply(req.body);
+  const contact = await contactUsService.autoReply(req.user._id, req.body);
   res.status(httpStatus.CREATED).send({ message: 'Message sent successfully!', success: true, data: contact });
 });
 

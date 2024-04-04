@@ -21,9 +21,13 @@ const sentMessage = async (userId, requestedBody) => {
   return updatedContact;
 };
 
-const autoReply = async (requestedBody) => {
+const autoReply = async (userId, requestedBody) => {
   const { messageType, contactId } = requestedBody;
-  const contact = await ContactUs.findById(contactId);
+  let contact = await ContactUs.findById(contactId);
+
+  if (!contact) {
+    contact = new ContactUs({ helpSeeker: userId });
+  }
 
   const generateMessage = replyMessages.find((m) => m.title === messageType);
 
@@ -48,7 +52,7 @@ const getUserContactMessage = async (userId) => {
       path: 'messages',
       populate: {
         path: 'sender',
-        select: '-password -email',
+        select: '-password',
       },
     },
   ]);
