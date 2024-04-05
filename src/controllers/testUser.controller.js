@@ -3,6 +3,7 @@ const User = require('../models/testUser.model');
 
 const Drive = require('../models/drive.model');
 const { removeSensitiveInfo, generateToken } = require('../middlewares/testAuth');
+const Payment = require('../models/payment.model');
 
 const registerUser = async (req, res) => {
   try {
@@ -107,9 +108,13 @@ const updateCredit = async (req, res) => {
     const isExist = await User.findOne({ _id: req.user._id });
 
     if (isExist) {
-      const result = await User.findByIdAndUpdate(req.user._id, { credit: req.body.credit }, {
-        new: true,
-      });
+      const result = await User.findByIdAndUpdate(
+        req.user._id,
+        { credit: req.body.credit },
+        {
+          new: true,
+        }
+      );
       res.status(200).json({
         success: true,
         message: 'User Info Update successfully',
@@ -129,9 +134,41 @@ const updateCredit = async (req, res) => {
   }
 };
 
+const getPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find({ user: req.user._id }).sort({ createdAt: -1 });
+    res.status(200).send(payments);
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const makeSubscription = async (req, res) => {
+  try {
+    console.log(req.body, 'jfklasjdfkl');
+    const newPayment = new Payment(req.body);
+    const payment = await newPayment.save();
+    res.status(200).json({
+      success: true,
+      message: 'Subscription created successfully!',
+      data: payment,
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   updateUserInfo,
-  updateCredit
+  updateCredit,
+  getPayments,
+  makeSubscription,
 };

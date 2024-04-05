@@ -21,7 +21,15 @@ const userSchema = new mongoose.Schema(
     credit: {
       type: Number,
       required: false,
-      default:0
+      default: 0,
+    },
+    currentPlan: {
+      type: String,
+      required: false,
+    },
+    subscriptionExpierDate: {
+      type: String,
+      required: false,
     },
     role: {
       type: String,
