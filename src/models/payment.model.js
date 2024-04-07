@@ -1,11 +1,10 @@
-
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
+      ref: 'TestUser',
       required: true,
     },
     amount: {
@@ -17,6 +16,10 @@ const paymentSchema = new mongoose.Schema(
       required: true,
     },
     invoiceId: {
+      type: String,
+      required: true,
+    },
+    plan: {
       type: String,
       required: true,
     },

@@ -100,7 +100,12 @@ const projectSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-
+    stockVideos: {
+      type: [String],
+      required: false,
+      default: [],
+    },
+    avatar: { type: [String], required: false, default: [] },
     editor: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'TestUser',

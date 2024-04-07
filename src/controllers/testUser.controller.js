@@ -136,7 +136,9 @@ const updateCredit = async (req, res) => {
 
 const getPayments = async (req, res) => {
   try {
-    const payments = await Payment.find({ user: req.user._id }).sort({ createdAt: -1 });
+    const payments = await Payment.find({ user: req.user._id })
+      .populate({ path: 'user', select: '-password' })
+      .sort({ createdAt: -1 });
     res.status(200).send(payments);
   } catch (error) {
     res.status(401).json({
