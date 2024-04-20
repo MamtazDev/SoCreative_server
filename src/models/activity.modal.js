@@ -1,6 +1,5 @@
 //activity modal schema
 
-
 const mongoose = require('mongoose');
 
 

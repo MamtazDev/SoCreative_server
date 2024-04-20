@@ -21,4 +21,6 @@ router.get('/getAllReviews', isAuth, projectController.getAllReviews);
 router.get('/:id', isAuth, projectController.getProjectDetails);
 router.get('/comment/:projectId', isAuth, projectController.getProjectComments);
 
+router.get('/projectDetailsById', isAuth, projectController.getProjectDetails);
+
 module.exports = router;

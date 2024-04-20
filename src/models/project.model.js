@@ -64,6 +64,7 @@ const projectSchema = new mongoose.Schema(
       required: false,
       default: [],
     },
+
     // brandKit: {
     //   type: mongoose.SchemaTypes.ObjectId,
     //   ref: 'BrandKit',

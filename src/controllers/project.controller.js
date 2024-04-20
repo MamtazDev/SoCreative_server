@@ -6,19 +6,27 @@ const addProject = catchAsync(async (req, res) => {
   const project = await projectService.createProject(req.user._id, req.body);
   res.status(httpStatus.CREATED).send({ message: 'Project created successfully!', success: true, data: project });
 });
-
 const updateProject = catchAsync(async (req, res) => {
   const project = await projectService.updateProjectInfo(req.files, req.user._id, req.body);
+  // const result = await  notificationService.createNotification(req.body)
   res.status(httpStatus.CREATED).send({ message: 'Project updated successfully!', success: true, data: project });
 });
-
 const getProjectDetails = catchAsync(async (req, res) => {
+  const project = await projectService.getProjectDetails(req.params.id);
+  if (!project) {
+    throw new Error('Project not found');
+  }
+  res.status(httpStatus.CREATED).send(project);
+});
+
+const projectByOwner =  catchAsync(async (req, res) => {
   const project = await projectService.getProjectInfo(req.params.id);
   if (!project) {
     throw new Error('Project not found');
   }
   res.status(httpStatus.CREATED).send(project);
 });
+
 const getUserProjects = catchAsync(async (req, res) => {
   const project = await projectService.getUserAllProjects(req.user._id, req.query);
   if (!project) {
@@ -68,4 +76,5 @@ module.exports = {
   getAllProjects,
   addProjectReview,
   getAllReviews,
+  projectByOwner
 };

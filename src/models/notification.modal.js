@@ -9,20 +9,20 @@ const xNotificationType = ["Project Accepted", "Event Alert", "Project Rejection
 const notificationSchema = new mongoose.Schema(
   {
     type: {
-      type: String, 
+      type: String,
       required: true,
       enum: xNotificationType
     },
     detailes: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     user: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'User',
-        required: true,
-      },
-    
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+
   },
   {
     timestamps: true

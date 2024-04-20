@@ -9,6 +9,7 @@ const testAuthRoute = require('./testAuth.route');
 const projectRoute = require('./project.route');
 const brandKitRoute = require('./brandKit.route');
 const vimeoRoute = require('./vimeo.route');
+const inviteRoute = require('./invite.route');
 const notificationRoute = require('./notification.route');
 const contactUsRoute = require('./contactUs.route');
 
@@ -47,6 +48,10 @@ const defaultRoutes = [
   {
     path: '/contact-us',
     route: contactUsRoute,
+  },
+  {
+    path: '/invite',
+    route: inviteRoute,
   },
 ];
 

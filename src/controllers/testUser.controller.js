@@ -166,6 +166,26 @@ const makeSubscription = async (req, res) => {
   }
 };
 
+
+// const createInviteLink = async (req, res) => {
+//   try {
+//     console.log("req.body", req.body);
+
+//     const newPayment = new Payment(req.body);
+//     const payment = await newPayment.save();
+//     res.status(200).json({
+//       success: true,
+//       message: 'Subscription created successfully!',
+//       data: payment,
+//     });
+//   } catch (error) {
+//     res.status(401).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
 module.exports = {
   registerUser,
   loginUser,
@@ -173,4 +193,5 @@ module.exports = {
   updateCredit,
   getPayments,
   makeSubscription,
+  // createInviteLink
 };

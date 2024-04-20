@@ -8,7 +8,8 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "start": "npm src/index.js",
+    "startold": "npm src/index.js",
+    "start": "ross-env NODE_ENV=development nodemon src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

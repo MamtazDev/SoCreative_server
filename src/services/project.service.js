@@ -84,6 +84,20 @@ const getProjectInfo = async (projectId) => {
   return project;
 };
 
+const getProjectDetails = async (projectId) => {
+  const project = await Project.findById(projectId)
+    .populate({ path: 'exportedUrl' })
+    .populate([
+      {
+        path: 'files',
+        populate: {
+          path: 'fileData',
+        },
+      },
+    ]);
+  return project;
+};
+
 const getUserAllProjects = async (userId, query) => {
   const projects = await Project.find({ creator: userId, ...query })
     .populate([
@@ -186,4 +200,5 @@ module.exports = {
   getAllProjectsInfo,
   addProjectReview,
   getAllReviewsInfo,
+  getProjectDetails
 };
