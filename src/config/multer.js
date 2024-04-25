@@ -52,7 +52,39 @@ const projectUpload = multer({
   storage: projectStorage,
 });
 
+
+
+// dihan
+
+const brandAssetsStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const destinationPath = path.join('public', 'uploads');
+    fs.mkdirSync(destinationPath, { recursive: true }); // Create directories recursively
+    cb(null, destinationPath);
+  },
+  filename: function (req, file, cb) {
+    const filename = `${Date.now()}${path.extname(file.originalname)}`;
+    cb(null, filename);
+  },
+});
+
+const brandUpload = multer({
+  storage: brandAssetsStorage,
+});
+
+const handleMulterError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ error: 'Multer error: ' + err.message });
+  } else if (err) {
+    return res.status(500).json({ error: err.message });
+  }
+
+  next();
+};
+
 module.exports = {
   upload,
   projectUpload,
+  brandUpload,
+  handleMulterError,
 };

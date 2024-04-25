@@ -19,7 +19,7 @@ const getProjectDetails = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(project);
 });
 
-const projectByOwner =  catchAsync(async (req, res) => {
+const projectByOwner = catchAsync(async (req, res) => {
   const project = await projectService.getProjectInfo(req.params.id);
   if (!project) {
     throw new Error('Project not found');
@@ -76,5 +76,5 @@ module.exports = {
   getAllProjects,
   addProjectReview,
   getAllReviews,
-  projectByOwner
+  projectByOwner,
 };

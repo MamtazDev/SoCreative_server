@@ -3,9 +3,47 @@ const catchAsync = require('../utils/catchAsync');
 const { brandKitService } = require('../services');
 
 const createBrandKit = catchAsync(async (req, res) => {
-  console.log("req.body:", req.body);
-  
-  const result = await brandKitService.createBrandKit(req.body);
+  const data = {
+    brandDescription: req.body.brandDescription,
+    brandName: req.body.brandName,
+    creator: req.user?._id,
+    brandGuidelines: [],
+    logos: [],
+    fonts: [],
+    imageAssets: [],
+    audioAssets: [],
+    colorPalette: [],
+  };
+
+  for (let i = 0; i < req.files.length; i++) {
+    const element = req.files[i];
+    if (element?.fieldname === 'brand[guidelines]') {
+      data.brandGuidelines.push(element?.path);
+    }
+    if (element?.fieldname === 'brand[audioAssets]') {
+      data.audioAssets.push(element?.path);
+    }
+    if (element?.fieldname === 'brand[imageAssets]') {
+      data.imageAssets.push(element?.path);
+    }
+    if (element?.fieldname === 'brand[fonts]') {
+      data.fonts.push(element?.path);
+    }
+    if (element?.fieldname === 'brand[logos]') {
+      data.logos.push(element?.path);
+    }
+    if (element?.fieldname === 'brandLogo') {
+      data['brandLogo'] = element?.path;
+    }
+  }
+
+  if (req.body.brand?.color) {
+    for (let i = 0; i < req.body.brand?.color.length; i++) {
+      data?.colorPalette.push(req.body.brand?.color[i]);
+    }
+  }
+
+  const result = await brandKitService.createBrandKit(data);
 
   res.status(httpStatus.OK).send({ message: 'Brand Kit created successfully!', success: true, data: result });
 });

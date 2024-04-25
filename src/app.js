@@ -55,7 +55,7 @@ if (config.env === 'production') {
 app.use('/v1', routes);
 
 // server file routes
-app.use('/public', express.static(path.join(__dirname, '/public')));
+app.use('/public', express.static(path.join(__dirname, '/public/uploads')));
 
 // Testing End point
 app.use('/', (req, res) => {

@@ -2,13 +2,12 @@ const BrandKit = require('../models/brandKit.model');
 
 const createBrandKit = async (body) => {
   const result = await BrandKit.create(body);
-  
   return result;
 };
 
 const getAllBrandKits = async () => {
   const result = await BrandKit.find({});
-  
+
   return result;
 };
 
@@ -21,15 +20,15 @@ const getBrandKitInfo = async (id) => {
 const updateBrandKit = async (id, body) => {
   const result = await BrandKit.findByIdAndUpdate(id, body, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
-  
+
   return result;
 };
 
 const deleteBrandKit = async (id) => {
   const result = await BrandKit.findByIdAndDelete(id);
-  
+
   return result;
 };
 

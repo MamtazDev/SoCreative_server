@@ -5,6 +5,12 @@ const Drive = require('../models/drive.model');
 const { removeSensitiveInfo, generateToken } = require('../middlewares/testAuth');
 const Payment = require('../models/payment.model');
 
+const Stripe = require('stripe');
+
+const stripe = new Stripe(
+  'sk_test_51M6wx2EMTQyMb7XDXr8kxdPREQqV4XJTPMgX7aPcKO7bKiSnmBEv9uLfap1hcYJiwEGg7yfE9PGT4C5XrFUERsXr00HhSFnd44'
+);
+
 const registerUser = async (req, res) => {
   try {
     const isExist = await User.findOne({ email: req.body.email });
@@ -166,6 +172,70 @@ const makeSubscription = async (req, res) => {
   }
 };
 
+const subscriptionPlan = async (req, res) => {
+  const customer = await stripe.customers.create({
+    name: req.user.name,
+    email: req.user?.email,
+    payment_method: req.body.paymentMethod,
+    invoice_settings: {
+      default_payment_method: req.body.paymentMethod,
+    },
+  });
+
+  // create a stripe subscription
+  const product = await stripe.products.create({
+    name: 'Monthly subscription',
+  });
+  // Create a subscription
+  const subscription = await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product: product.id,
+          unit_amount: req.body.amount * 1,
+          recurring: {
+            interval: req.body.plan,
+          },
+        },
+      },
+    ],
+
+    payment_settings: {
+      payment_method_types: ['card'],
+      save_default_payment_method: 'on_subscription',
+    },
+    expand: ['latest_invoice.payment_intent'],
+  });
+
+  const invoices = await stripe.invoices.list({
+    customer: customer.id,
+    limit: 10, // Limit the number of invoices returned (optional)
+  });
+  // Send back the client secret for payment
+  res.json({
+    success: true,
+    invoices,
+    message: 'Subscription successfully initiated',
+    clientSecret: subscription.latest_invoice.payment_intent.client_secret,
+  });
+};
+
+const getCustomerInvoices = async (req, res) => {
+  try {
+    const { customerId } = req.params;
+    // Retrieve invoices for the specified customer
+    const invoices = await stripe.invoices.list({
+      customer: customerId,
+      limit: 10, // Limit the number of invoices returned (optional)
+    });
+    res.json({ invoices: invoices.data });
+  } catch (error) {
+    console.error('Error retrieving customer invoices:', error);
+    res.status(500).json({ error: 'Failed to retrieve customer invoices' });
+  }
+};
 
 // const createInviteLink = async (req, res) => {
 //   try {
@@ -193,5 +263,7 @@ module.exports = {
   updateCredit,
   getPayments,
   makeSubscription,
+  subscriptionPlan,
+  getCustomerInvoices,
   // createInviteLink
 };
