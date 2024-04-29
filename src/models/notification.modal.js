@@ -1,17 +1,22 @@
-//notification schema 
+//notification schema
 
 const mongoose = require('mongoose');
 
-
-const xNotificationType = ["Project Accepted", "Event Alert", "Project Rejection", "Unload Premium Feature", "Paid Successful", "Exported Project"]
-
+const xNotificationType = [
+  'Project Accepted',
+  'Event Alert',
+  'Project Rejection',
+  'Unload Premium Feature',
+  'Paid Successful',
+  'Exported Project',
+];
 
 const notificationSchema = new mongoose.Schema(
   {
     type: {
       type: String,
       required: true,
-      enum: xNotificationType
+      enum: xNotificationType,
     },
     detailes: {
       type: String,
@@ -22,10 +27,9 @@ const notificationSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

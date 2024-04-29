@@ -15,27 +15,25 @@ const createBrandKit = catchAsync(async (req, res) => {
     colorPalette: [],
   };
 
-  console.log("Body all files CDN url:", req.files)
-
   for (let i = 0; i < req.files.length; i++) {
     const element = req.files[i];
     if (element?.fieldname === 'brand[guidelines]') {
-      data.brandGuidelines.push(element?.location);
+      data.brandGuidelines.push(element?.path);
     }
     if (element?.fieldname === 'brand[audioAssets]') {
-      data.audioAssets.push(element?.location);
+      data.audioAssets.push(element?.path);
     }
     if (element?.fieldname === 'brand[imageAssets]') {
-      data.imageAssets.push(element?.location);
+      data.imageAssets.push(element?.path);
     }
     if (element?.fieldname === 'brand[fonts]') {
-      data.fonts.push(element?.location);
+      data.fonts.push(element?.path);
     }
     if (element?.fieldname === 'brand[logos]') {
-      data.logos.push(element?.location);
+      data.logos.push(element?.path);
     }
     if (element?.fieldname === 'brandLogo') {
-      data['brandLogo'] = element?.location;
+      data['brandLogo'] = element?.path;
     }
   }
 

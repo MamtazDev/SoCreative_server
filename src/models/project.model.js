@@ -127,7 +127,7 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
       default: 'Draft',
-      enum: ['Draft', 'Pending', 'accepted', 'In Progress', 'Exported'],
+      enum: ['Draft', 'Decline', 'Pending', 'accepted', 'In Progress', 'Exported'],
     },
   },
   {

@@ -10,21 +10,21 @@ const brandKitSchema = new mongoose.Schema(
 
     brandLogo: {
       type: String,
-      required: false,
+      required: true,
     },
     brandName: {
       type: String,
-      required: false,
+      required: true,
     },
     brandDescription: {
       type: String,
-      required: false,
+      required: true,
     },
     
     //brand assets
     brandGuidelines: [{
       type: String,
-      required: false,
+      required: true,
     }], 
     logos: [{
       type: String,

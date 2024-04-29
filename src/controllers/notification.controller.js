@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { notificationService } = require('../services');
 
 const createNotification = catchAsync(async (req, res) => {
-  const result = await  notificationService.createNotification(req.body);
+  const result = await notificationService.createNotification(req.body);
 
   res.status(httpStatus.OK).send({ message: 'Notification created successfully!', success: true, data: result });
 });
@@ -24,6 +24,14 @@ const getAllNotificationById = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ message: 'Notification fetched successfully!', success: true, data: result });
 });
 
+const getMyNotifications = catchAsync(async (req, res) => {
+  const result = await notificationService.getAllNotification(
+    req.user,
+    parseInt(req.query?.currentPage),
+    parseInt(req.query?.limit)
+  );
+  res.status(httpStatus.OK).send({ message: 'Notification fetched successfully!', success: true, data: result });
+});
 
 const deleteNotification = catchAsync(async (req, res) => {
   const result = await notificationService.deleteNotification(req.params.id);
@@ -35,4 +43,5 @@ module.exports = {
   createNotification,
   getAllNotificationById,
   deleteNotification,
+  getMyNotifications,
 };

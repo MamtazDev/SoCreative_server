@@ -12,6 +12,7 @@ const vimeoRoute = require('./vimeo.route');
 const inviteRoute = require('./invite.route');
 const notificationRoute = require('./notification.route');
 const contactUsRoute = require('./contactUs.route');
+const activityRoute = require('./activity.route');
 
 const router = express.Router();
 
@@ -52,6 +53,10 @@ const defaultRoutes = [
   {
     path: '/invite',
     route: inviteRoute,
+  },
+  {
+    path: '/activities',
+    route: activityRoute,
   },
 ];
 

@@ -1,4 +1,5 @@
 const File = require('../models/file.model');
+const Notification = require('../models/notification.modal');
 const Project = require('../models/project.model');
 const ProjectComment = require('../models/projectComment.model');
 const ProjectReview = require('../models/projectReview.model');
@@ -49,24 +50,16 @@ const updateProjectInfo = async (files, userId, requestedBody) => {
       file: rest?.path,
       fileSize: rest?.size,
     });
-
     const files = await newFile.save();
-
     const project = await Project.findById(projectId);
-
     project.exportedUrl = files._id;
-
     project.previousVersion.push({
       fileData: files._id,
     });
-
     const updatedProject = await project.save();
-
     return updatedProject;
   }
-
   const updateProject = await Project.findByIdAndUpdate(projectId, rest, { new: true });
-
   return updateProject;
 };
 
@@ -83,6 +76,10 @@ const getProjectInfo = async (projectId) => {
     ]);
   return project;
 };
+
+// const getInvitedProject = async (projectId) => {
+//   const projectInvite
+// }
 
 const getProjectDetails = async (projectId) => {
   const project = await Project.findById(projectId)
@@ -200,5 +197,5 @@ module.exports = {
   getAllProjectsInfo,
   addProjectReview,
   getAllReviewsInfo,
-  getProjectDetails
+  getProjectDetails,
 };
