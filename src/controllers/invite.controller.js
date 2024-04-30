@@ -1,8 +1,10 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
+const { setPasswordTemplate } = require('../utils/emailTemplate');
 
 const create = catchAsync(async (req, res) => {
   const {email} = res.body
+  setPasswordTemplate(email)
 
   res.status(httpStatus.CREATED).send({ data: "Data" });
 });
