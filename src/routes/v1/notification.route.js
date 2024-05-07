@@ -9,6 +9,8 @@ const router = express.Router();
 
 // add notification
 router.post('/', notificationController.createNotification);
+// seen all notifications by user id
+router.post('/seen-my-notify', isAuth, notificationController.seenMyNotifications);
 
 // get All notification based on user id
 router.get('/:id', notificationController.getAllNotificationById);

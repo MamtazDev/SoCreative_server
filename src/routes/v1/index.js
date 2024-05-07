@@ -13,6 +13,7 @@ const inviteRoute = require('./invite.route');
 const notificationRoute = require('./notification.route');
 const contactUsRoute = require('./contactUs.route');
 const activityRoute = require('./activity.route');
+const helperRoute = require('./helper.route');
 
 const router = express.Router();
 
@@ -57,6 +58,10 @@ const defaultRoutes = [
   {
     path: '/activities',
     route: activityRoute,
+  },
+  {
+    path: '/helpers',
+    route: helperRoute,
   },
 ];
 

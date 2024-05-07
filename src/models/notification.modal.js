@@ -27,6 +27,11 @@ const notificationSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    isSeen: {
+      type: Boolean,
+      enum: [true, false],
+      default: false,
+    },
   },
   {
     timestamps: true,

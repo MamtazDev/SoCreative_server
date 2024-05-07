@@ -6,8 +6,26 @@ const createNotification = async (body) => {
   return result;
 };
 
+const seenNotificationsByUser = async (user) => {
+  const result = await Notification.updateMany(
+    {
+      user: user?._id,
+      isSeen: false,
+    },
+    {
+      $set: {
+        isSeen: true,
+      },
+    },
+    { new: false }
+  );
+
+  return result;
+};
+
 const getAllNotification = async (user, page = 1, limit = 6) => {
   const totalCount = await Notification.countDocuments({ user: user?._id });
+  const totalUnSeen = await Notification.countDocuments({ user: user?._id, isSeen: false });
 
   const notifications = await Notification.find({ user: user?._id })
     .sort({ createdAt: -1 })
@@ -35,7 +53,7 @@ const getAllNotification = async (user, page = 1, limit = 6) => {
     totalPages: Math.ceil(totalCount / limit),
   };
 
-  return { notificationsList, meta_data };
+  return { notificationsList, meta_data, unseen: totalUnSeen };
 };
 
 // const getNotificationInfo = async (id) => {
@@ -54,4 +72,5 @@ module.exports = {
   createNotification,
   getAllNotification,
   deleteNotification,
+  seenNotificationsByUser,
 };

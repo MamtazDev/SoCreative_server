@@ -6,7 +6,7 @@ const brandKitSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',
       required: true,
-    }, 
+    },
 
     brandLogo: {
       type: String,
@@ -20,42 +20,54 @@ const brandKitSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    
+
     //brand assets
-    brandGuidelines: [{
-      type: String,
-      required: true,
-    }], 
-    logos: [{
-      type: String,
+    brandGuidelines: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    logos: [
+      {
+        type: String,
+        required: false,
+        default: [],
+      },
+    ],
+    fonts: [
+      {
+        type: String,
+        required: false,
+        default: [],
+      },
+    ],
+    colorPalette: {
+      type: [String],
       required: false,
       default: [],
-    }],
-    fonts: [{
-      type: String,
-      required: false,
-      default: [],
-    }],
-    colorPalette: [{
-      type: String,
-      required: false,
-      default: [],
-    }],
-    imageAssets: [{
-      type: String,
-      required: false,
-      default: [],
-    }],
-    videoAssets: [{
-      type: String,
-      required: false,
-      default: [],
-    }],
-    audioAssets: [{
-      type: String,
-      required: false,
-      default: [],
-    }],
+    },
+    imageAssets: [
+      {
+        type: String,
+        required: false,
+        default: [],
+      },
+    ],
+    videoAssets: [
+      {
+        type: String,
+        required: false,
+        default: [],
+      },
+    ],
+    audioAssets: [
+      {
+        type: String,
+        required: false,
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

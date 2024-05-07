@@ -12,8 +12,8 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const roleType = req.query.clientType
-  console.log("roleType:", roleType)
+  const roleType = req.query.clientType;
+  // console.log("roleType:", roleType)
   if (roleType) {
     // Filter TestUser with role === "ADMIN"
     const result = await TestUser.find({ role: roleType });

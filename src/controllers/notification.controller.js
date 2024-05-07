@@ -8,6 +8,11 @@ const createNotification = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ message: 'Notification created successfully!', success: true, data: result });
 });
 
+const seenMyNotifications = catchAsync(async (req, res) => {
+  const result = await notificationService.seenNotificationsByUser(req.user);
+  res.status(httpStatus.OK).send({ message: 'Notification Seen successfully!', success: true, data: result });
+});
+
 // const getAllBrandKits = catchAsync(async (req, res) => {
 //   const result = await brandKitService.getAllBrandKits();
 
@@ -44,4 +49,5 @@ module.exports = {
   getAllNotificationById,
   deleteNotification,
   getMyNotifications,
+  seenMyNotifications,
 };

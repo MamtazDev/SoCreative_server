@@ -65,17 +65,16 @@ const projectSchema = new mongoose.Schema(
       default: [],
     },
 
-    // brandKit: {
-    //   type: mongoose.SchemaTypes.ObjectId,
-    //   ref: 'BrandKit',
-    //   required: false,
-    //   default: null,
-    // },
     brandKit: {
-      type: String,
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'BrandKit',
       required: false,
-      default: '',
     },
+    // brandKit: {
+    //   type: String,
+    //   required: false,
+    //   default: '',
+    // },
     aspectRatio: {
       type: String,
       required: false,

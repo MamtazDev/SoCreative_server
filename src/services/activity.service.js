@@ -20,9 +20,12 @@ const createNewActivity = async (user, data) => {
     updateData['type'] = 'Project Rejection';
     updateData['detailes'] = 'Project is Rejected';
   }
-  const newData = new Activity(updateData);
-  const result = await newData.save();
-  return result;
+  if (updateData?.type) {
+    const newData = new Activity(updateData);
+    const result = await newData.save();
+    return result;
+  }
+  return true;
 };
 
 const getActivities = async (user) => {

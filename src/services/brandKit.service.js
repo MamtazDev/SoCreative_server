@@ -11,6 +11,11 @@ const getAllBrandKits = async () => {
   return result;
 };
 
+const getAllBrandKitsByUserId = async (userId) => {
+  const result = await BrandKit.find({ creator: userId }).sort({ _id: -1 });
+  return result;
+};
+
 const getBrandKitInfo = async (id) => {
   const result = await BrandKit.findById(id);
 
@@ -38,4 +43,5 @@ module.exports = {
   getBrandKitInfo,
   updateBrandKit,
   deleteBrandKit,
+  getAllBrandKitsByUserId,
 };

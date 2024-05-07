@@ -37,19 +37,24 @@ const createBrandKit = catchAsync(async (req, res) => {
     }
   }
 
-  if (req.body.brand?.color) {
+  if (req.body.brand?.color?.length > 0) {
     for (let i = 0; i < req.body.brand?.color.length; i++) {
-      data?.colorPalette.push(req.body.brand?.color[i]);
+      data.colorPalette.push(req.body.brand?.color[i]);
     }
   }
 
   const result = await brandKitService.createBrandKit(data);
-
   res.status(httpStatus.OK).send({ message: 'Brand Kit created successfully!', success: true, data: result });
 });
 
 const getAllBrandKits = catchAsync(async (req, res) => {
   const result = await brandKitService.getAllBrandKits();
+
+  res.status(httpStatus.OK).send({ message: 'Brand Kit fetched successfully!', success: true, data: result });
+});
+
+const getAllBrandKitsByUser = catchAsync(async (req, res) => {
+  const result = await brandKitService.getAllBrandKitsByUserId(req.user?._id);
 
   res.status(httpStatus.OK).send({ message: 'Brand Kit fetched successfully!', success: true, data: result });
 });
@@ -82,4 +87,5 @@ module.exports = {
   getAllBrandKits,
   updateBrandKit,
   deleteBrandKit,
+  getAllBrandKitsByUser,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { projectService } = require('../services');
@@ -12,6 +13,10 @@ const addProject = catchAsync(async (req, res) => {
 
 const updateProject = catchAsync(async (req, res) => {
   const result = await projectService.updateProjectInfo(req.files, req.user._id, req.body);
+
+  if (!req.body.status) {
+    req.body['status'] = 'Draft';
+  }
 
   const project = await Project.findById(req.body.projectId);
   const notificationData = { type: '', detailes: '', user: project?.creator };
@@ -35,11 +40,10 @@ const updateProject = catchAsync(async (req, res) => {
   if (notificationData?.type) {
     await Notification.create(notificationData);
   }
-  await createNewActivity(req.user, { status: req.body.status });
+  await createNewActivity(req.user, { status: req.body?.status });
   // const result = await  notificationService.createNotification(req.body)
   res.status(httpStatus.CREATED).send({ message: 'Project updated successfully!', success: true, data: result });
 });
-
 const getProjectDetails = catchAsync(async (req, res) => {
   const project = await projectService.getProjectDetails(req.params.id);
   if (!project) {
