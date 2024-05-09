@@ -1,10 +1,6 @@
 const nodemailer = require('nodemailer');
-const { setPasswordTemplate } = require('./emailTemplate');
 
-const sendVerificationCode = async (properties) => {
-  console.log('properties', properties);
-  console.log('properties.email', properties.email);
-
+const emailSender = (to, subject, html) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -13,21 +9,21 @@ const sendVerificationCode = async (properties) => {
     },
   });
 
-  const mailOptions = {
-    from: process.env.GMAIL_USER,
-    to: properties.email,
-    subject: 'Set your password',
-    html: setPasswordTemplate(),
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      return true;
+  transporter.sendMail(
+    {
+      from: process.env.GMAIL_USER,
+      to,
+      subject,
+      html,
+    },
+    (error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        return true;
+      }
     }
-  });
+  );
 };
 
-
-module.exports = { sendVerificationCode };
+module.exports = { emailSender };

@@ -1,11 +1,26 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService, driveService } = require('../services');
+const { emailSender } = require('../utils/emailSender');
+const { informativeTemplate } = require('../utils/emailTemplate');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
   const drive = await driveService.createDrive(user);
+
+  emailSender(
+    'personal.sifat@gmail.com',
+    'OTP Verification - SoCreative',
+    informativeTemplate({
+      title: 'OTP Verification Required!',
+      description: 'We appreciate your participation and support!',
+      link: `https://facebook.com`,
+      btnText: 'Go To Website',
+      imgURL: 'https://cdn.templates.unlayer.com/assets/1595747900373-ssss.png',
+    })
+  );
+
   res.status(httpStatus.CREATED).send({ user, tokens, drive });
 });
 

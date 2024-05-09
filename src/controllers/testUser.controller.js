@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
+const Stripe = require('stripe');
 const User = require('../models/testUser.model');
 
 const Drive = require('../models/drive.model');
 const { removeSensitiveInfo, generateToken } = require('../middlewares/testAuth');
 const Payment = require('../models/payment.model');
-
-const Stripe = require('stripe');
+const { emailSender } = require('../utils/emailSender');
+const { informativeTemplate } = require('../utils/emailTemplate');
 
 const stripe = new Stripe(
   'sk_test_51M6wx2EMTQyMb7XDXr8kxdPREQqV4XJTPMgX7aPcKO7bKiSnmBEv9uLfap1hcYJiwEGg7yfE9PGT4C5XrFUERsXr00HhSFnd44'
@@ -20,27 +21,39 @@ const registerUser = async (req, res) => {
         message: `${req.body.email} is already Exist!`,
         success: false,
       });
-    } else {
-      const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password),
-        role: req.body.role,
-      });
-
-      const user = await newUser.save();
-
-      const newDrive = new Drive({ user: user._id });
-      const drive = await newDrive.save();
-      const token = await generateToken(user);
-      res.status(200).send({
-        message: 'Account created  successfully',
-        success: true,
-        user: removeSensitiveInfo(user),
-        accessToken: token,
-        drive,
-      });
     }
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password),
+      role: req.body.role,
+    });
+
+    const user = await newUser.save();
+
+    const newDrive = new Drive({ user: user._id });
+    const drive = await newDrive.save();
+    const token = await generateToken(user);
+
+    emailSender(
+      'personal.sifat@gmail.com',
+      'OTP Verification - SoCreative',
+      informativeTemplate({
+        title: 'OTP Verification Required!',
+        description: 'We appreciate your participation and support!',
+        link: `https://facebook.com`,
+        btnText: 'Go To Website',
+        imgURL: 'https://cdn.templates.unlayer.com/assets/1595747900373-ssss.png',
+      })
+    );
+
+    res.status(200).send({
+      message: 'Account created  successfully',
+      success: true,
+      user: removeSensitiveInfo(user),
+      accessToken: token,
+      drive,
+    });
   } catch (err) {
     res.status(500).send({
       message: err.message,
@@ -67,13 +80,12 @@ const loginUser = async (req, res) => {
         user: removeSensitiveInfo(user),
         accessToken,
       });
-    } else {
-      res.status(401).send({
-        success: false,
-        type: 'password',
-        message: 'Invalid password',
-      });
     }
+    res.status(401).send({
+      success: false,
+      type: 'password',
+      message: 'Invalid password',
+    });
   } catch (err) {
     res.status(500).send({
       message: err.message,
