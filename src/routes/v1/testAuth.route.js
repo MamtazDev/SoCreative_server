@@ -9,6 +9,7 @@ const {
   createInviteLink,
   subscriptionPlan,
   getCustomerInvoices,
+  stripeWebHook,
 } = require('../../controllers/testUser.controller');
 const { isAuth } = require('../../middlewares/testAuth');
 
@@ -18,6 +19,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/makeSubscription', isAuth, makeSubscription);
 router.post('/subscription-plan', isAuth, subscriptionPlan);
+router.post('/webhook', stripeWebHook);
 router.get('/subscription-invoices/:customerId', getCustomerInvoices);
 router.patch('/updateUserInfo', isAuth, updateUserInfo);
 router.patch('/updateCredit', isAuth, updateCredit);
