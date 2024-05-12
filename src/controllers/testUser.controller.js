@@ -291,6 +291,36 @@ const stripeWebHook = (req, res) => {
 
   // Return a response to acknowledge receipt of the event
   res.json({ received: true });
+
+  /*
+  customer.subscription.created
+  invoice.updated
+  invoice.paid
+  invoice.payment_succeeded
+  customer.subscription.updated
+  invoice.upcoming
+
+  invoice.created
+  customer.subscription.updated
+  invoice.upcoming
+  invoice.updated
+  invoice.paid
+  invoice.payment_succeeded
+  invoice.finalized
+
+  invoice.created
+  customer.subscription.updated
+  invoice.upcoming
+  invoice.updated
+  invoice.paid
+  invoice.payment_succeeded
+  invoice.finalized
+
+  =====================
+
+  customer.subscription.deleted
+  invoice.payment_failed
+  */
 };
 
 module.exports = {
