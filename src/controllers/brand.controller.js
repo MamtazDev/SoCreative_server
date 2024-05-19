@@ -17,7 +17,7 @@ const createBrandKit = catchAsync(async (req, res) => {
 
   for (let i = 0; i < req.files.length; i++) {
     const element = req.files[i];
-    if (element?.fieldname === 'brand[guidelines]') {
+    if (element?.fieldname === 'brand[brandGuidelines]') {
       data.brandGuidelines.push(element?.path);
     }
     if (element?.fieldname === 'brand[audioAssets]') {
@@ -33,13 +33,13 @@ const createBrandKit = catchAsync(async (req, res) => {
       data.logos.push(element?.path);
     }
     if (element?.fieldname === 'brandLogo') {
-      data['brandLogo'] = element?.path;
+      data.brandLogo = element?.path;
     }
   }
 
-  if (req.body.brand?.color?.length > 0) {
-    for (let i = 0; i < req.body.brand?.color.length; i++) {
-      data.colorPalette.push(req.body.brand?.color[i]);
+  if (req.body.brand?.colorPalette?.length > 0) {
+    for (let i = 0; i < req.body.brand?.colorPalette.length; i++) {
+      data.colorPalette.push(req.body.brand?.colorPalette[i]);
     }
   }
 
